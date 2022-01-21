@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:tbib_toast/tbib_toast.dart';
 
 class ProfileScreenCubit extends Cubit<ProfileScreenState> {
   String? promotionValue;
@@ -150,25 +151,30 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
     });
   }
 
-  Future updateUserInfo(uid, Map<String, dynamic> map) async {
+  Future updateUserInfo(context, uid, Map<String, dynamic> map) async {
+    print(uid);
     await FirebaseFirestore.instance
         .collection(USERS)
         .doc(uid)
         .update(map)
         .then((value) {
       getUserInfo();
+      Toast.show("User Info Updated Successfully", context,duration: Toast.lengthLong,backgroundColor: Colors.green);
+
     }).catchError((error) {
+      Toast.show("User Info Updated Error ", context,duration: Toast.lengthLong,backgroundColor: Colors.red);
+
       print(error.toString());
     });
   }
 
-  Future sendNotificationForUser(String type, String uid) async {
+  Future sendNotificationForUser(context,String type, String uid) async {
     if (type == 'pro') {
-      updateUserInfo(uid, {
+      updateUserInfo(context,uid, {
         "jobDesc": "${promotionValue}",
       });
     } else if (type == 'dep') {
-      updateUserInfo(uid, {
+      updateUserInfo(context,uid, {
         "department": "${departMentValue}",
       });
     }

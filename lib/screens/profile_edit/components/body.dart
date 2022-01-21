@@ -1,4 +1,3 @@
-
 import 'package:admin_project/models/user_model.dart';
 import 'package:admin_project/screens/profile_edit/components/drop2.dart';
 import 'package:admin_project/screens/profile_screen/cubit/profile_screen_cubit.dart';
@@ -30,6 +29,7 @@ class Body extends StatelessWidget {
   var jobDesc = TextEditingController();
   var militryService = TextEditingController();
   var department = TextEditingController();
+  var hiredate = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class Body extends StatelessWidget {
       physics: BouncingScrollPhysics(),
       child: Padding(
         padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(8)),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(8)),
         child: Column(
           children: [
             Container(
@@ -87,7 +87,9 @@ class Body extends StatelessWidget {
                           CircleAvatar(
                             radius: SizeConfig.bodyHeight * .084,
                             backgroundColor:
-                                Theme.of(context).scaffoldBackgroundColor,
+                            Theme
+                                .of(context)
+                                .scaffoldBackgroundColor,
                           ),
                           CircleAvatar(
                             radius: SizeConfig.bodyHeight * .08,
@@ -135,7 +137,7 @@ class Body extends StatelessWidget {
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize:
-                                            getProportionateScreenWidth(16.0))),
+                                        getProportionateScreenWidth(16.0))),
                               ))),
                       SizedBox(
                         width: getProportionateScreenWidth(30.0),
@@ -155,7 +157,7 @@ class Body extends StatelessWidget {
                                     style: TextStyle(
                                         color: kPrimaryColor,
                                         fontSize:
-                                            getProportionateScreenWidth(14.0))),
+                                        getProportionateScreenWidth(14.0))),
                               ))),
                     ],
                   ),
@@ -179,7 +181,7 @@ class Body extends StatelessWidget {
                                     style: TextStyle(
                                         color: kPrimaryColor,
                                         fontSize:
-                                            getProportionateScreenWidth(16.0))),
+                                        getProportionateScreenWidth(16.0))),
                               ))),
                       SizedBox(
                         width: getProportionateScreenWidth(30.0),
@@ -198,7 +200,7 @@ class Body extends StatelessWidget {
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize:
-                                            getProportionateScreenWidth(16.0))),
+                                        getProportionateScreenWidth(16.0))),
                               ))),
                     ],
                   ),
@@ -235,7 +237,7 @@ class Body extends StatelessWidget {
               TextInputType.text,
               Icons.supervised_user_circle_sharp,
               'first name',
-              (value) {
+                  (value) {
                 if (value!.isEmpty) return 'first name is required';
               },
             ),
@@ -247,13 +249,11 @@ class Body extends StatelessWidget {
               TextInputType.text,
               Icons.supervised_user_circle_sharp,
               'last name',
-              (value) {
+                  (value) {
                 if (value!.isEmpty) return 'last name is required';
               },
             ),
-            SizedBox(
-              height: getProportionateScreenHeight(15),
-            ),
+
             SizedBox(
               height: getProportionateScreenHeight(15),
             ),
@@ -262,7 +262,7 @@ class Body extends StatelessWidget {
               TextInputType.phone,
               Icons.phone,
               'phone',
-              (value) {
+                  (value) {
                 if (value!.isEmpty) return 'phone number is required';
               },
             ),
@@ -274,7 +274,7 @@ class Body extends StatelessWidget {
               TextInputType.streetAddress,
               Icons.location_on_outlined,
               'Address',
-              (value) {
+                  (value) {
                 if (value!.isEmpty) return 'Address is required';
               },
             ),
@@ -286,17 +286,39 @@ class Body extends StatelessWidget {
               TextInputType.datetime,
               Icons.date_range,
               'Date',
-              (value) {
+                  (value) {
                 if (value!.isEmpty) return 'Birth Date is required';
               },
               onTap: () {
                 showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1950, 1, 1),
-                        lastDate: DateTime.now())
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1950, 1, 1),
+                    lastDate: DateTime.now())
                     .then((value) {
                   dateOfBirth.text = DateFormat.yMMMd().format(value!);
+                });
+              },
+            ),
+            SizedBox(
+              height: getProportionateScreenHeight(15),
+            ),
+            DefultTextFormField(
+              hiredate..text = userModel.hire ?? '',
+              TextInputType.datetime,
+              Icons.date_range,
+              'Hiring Date',
+                  (value) {
+                if (value!.isEmpty) return 'Hiring Date is required';
+              },
+              onTap: () {
+                showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1950, 1, 1),
+                    lastDate: DateTime.now())
+                    .then((value) {
+                  hiredate.text = DateFormat.yMMMd().format(value!);
                 });
               },
             ),
@@ -308,7 +330,7 @@ class Body extends StatelessWidget {
               TextInputType.number,
               Icons.money,
               'Sallary',
-              (value) {
+                  (value) {
                 if (value!.isEmpty) return 'sallary is required';
               },
             ),
@@ -321,16 +343,17 @@ class Body extends StatelessWidget {
             DefaultButton(
               text: 'Update',
               press: () {
-                cubit.updateUserInfo(userModel.uid,
+                cubit.updateUserInfo(context,userModel.uid,
                     {
-                  'firstName': fisrtName.text,
-                  'lastName': lastName.text,
-                  'phoneNumber': phone.text,
-                  'dateOfBirth': dateOfBirth.text,
-                  'address': address.text,
-                  'sallary': totalSallary.text,
-                  'sallaryThen':totalSallary.text,
-                }).then((value) {
+                      'firstName': fisrtName.text,
+                      'lastName': lastName.text,
+                      'phoneNumber': phone.text,
+                      'dateOfBirth': dateOfBirth.text,
+                      'address': address.text,
+                      'sallary': totalSallary.text,
+                      'sallaryThen': totalSallary.text,
+                      'hire': hiredate.text
+                    }).then((value) {
                   fisrtName.clear();
                   lastName.clear();
                   phone.clear();
@@ -342,6 +365,7 @@ class Body extends StatelessWidget {
                   jobDesc.clear();
                   militryService.clear();
                   department.clear();
+                  hiredate.clear();
                   Navigator.pop(context);
                 });
               },
@@ -368,7 +392,8 @@ class Body extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Promotion User',
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .bodyText1!
                     .copyWith(fontSize: 22.0),
@@ -382,9 +407,10 @@ class Body extends StatelessWidget {
         ),
       ),
       btnOkOnPress: () {
-        cubit.sendNotificationForUser('pro', userModel.uid ?? '');
+        cubit.sendNotificationForUser(context,'pro', userModel.uid ?? '');
       },
-    )..show();
+    )
+      ..show();
   }
 
   AwesomeDialog showDep(context, ProfileScreenCubit cubit) {
@@ -403,7 +429,8 @@ class Body extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Change User Deparment',
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .bodyText1!
                     .copyWith(fontSize: 22.0),
@@ -417,9 +444,10 @@ class Body extends StatelessWidget {
         ),
       ),
       btnOkOnPress: () {
-        cubit.sendNotificationForUser('dep', userModel.uid ?? '');
+        cubit.sendNotificationForUser(context,'dep', userModel.uid ?? '');
       },
-    )..show();
+    )
+      ..show();
   }
 
   AwesomeDialog showMiltray(context, ProfileScreenCubit cubit) {
@@ -438,7 +466,8 @@ class Body extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Change Militry Status',
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .bodyText1!
                     .copyWith(fontSize: 22.0),
@@ -452,10 +481,11 @@ class Body extends StatelessWidget {
         ),
       ),
       btnOkOnPress: () {
-        cubit.updateUserInfo(userModel.uid ?? '',
+        cubit.updateUserInfo(context,userModel.uid ?? '',
             {"militryService": "${cubit.miltrayServiceValue}"});
       },
-    )..show();
+    )
+      ..show();
   }
 
   AwesomeDialog showIncrement(context, ProfileScreenCubit cubit) {
@@ -474,7 +504,8 @@ class Body extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Sallary Bonus',
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .bodyText1!
                     .copyWith(fontSize: 22.0),
@@ -487,7 +518,7 @@ class Body extends StatelessWidget {
                 TextInputType.number,
                 Icons.format_indent_increase_outlined,
                 'Enter Increase Value',
-                (value) {
+                    (value) {
                   if (value!.isEmpty) return 'Increase Value is required';
                 },
               ),
@@ -501,12 +532,13 @@ class Body extends StatelessWidget {
           double sa2 = double.parse(bonus.text);
           String total = '${sa1 + sa2}';
           print(total);
-          cubit.updateUserInfo(userModel.uid, {
+          cubit.updateUserInfo(context,userModel.uid, {
             "sallaryThen": total,
           });
         }
       },
-    )..show();
+    )
+      ..show();
   }
 
   AwesomeDialog showDecrement(context, ProfileScreenCubit cubit) {
@@ -525,7 +557,8 @@ class Body extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Sallary Decut',
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .bodyText1!
                     .copyWith(fontSize: 22.0),
@@ -538,7 +571,7 @@ class Body extends StatelessWidget {
                 TextInputType.number,
                 Icons.format_indent_increase_outlined,
                 'Enter discount Value',
-                (value) {
+                    (value) {
                   if (value!.isEmpty) return 'Discount Value is required';
                 },
               ),
@@ -552,11 +585,12 @@ class Body extends StatelessWidget {
           double sa2 = double.parse(discount.text) * -1;
           String total = '${sa1 + sa2}';
           print(total);
-          cubit.updateUserInfo(userModel.uid, {
+          cubit.updateUserInfo(context,userModel.uid, {
             "sallaryThen": total,
           });
         }
       },
-    )..show();
+    )
+      ..show();
   }
 }

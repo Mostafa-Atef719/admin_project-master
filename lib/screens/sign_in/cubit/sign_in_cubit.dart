@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tbib_toast/tbib_toast.dart';
 
 class SignInCubit extends Cubit<SignInStates> {
   SignInCubit() : super(InitialState());
@@ -61,10 +62,13 @@ class SignInCubit extends Cubit<SignInStates> {
         .then((value) {
       CachedHelper.saveData(key: USER_UID, value: value.user!.uid);
       checkFirestoreInfo(context, value.user!.uid);
+      Toast.show("Welcome", context,duration: Toast.lengthLong,backgroundColor: Colors.green);
+
       emit(LoginSuccessSignInState());
 
     }).catchError((error) {
-      print(error.toString());
+
+      Toast.show("Your Email Or Password invaild", context,duration: Toast.lengthLong,backgroundColor: Colors.red);
       emit(LoginFailureSignInState(error.toString()));
 
     });

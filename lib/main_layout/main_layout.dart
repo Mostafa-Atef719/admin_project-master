@@ -1,3 +1,4 @@
+import 'package:admin_project/screens/search_screen/search.dart';
 import 'package:admin_project/screens/sign_in/sign_in_screen.dart';
 import 'package:admin_project/shared/components/bottom_nav_bar.dart';
 import 'package:admin_project/shared/database/local/cache_helper.dart';
@@ -39,6 +40,12 @@ class MainLayout extends StatelessWidget {
                 ),
 
               ],
+              leading:  IconButton(
+                icon: Icon(Icons.search),
+                onPressed: (){
+                  navigateTo(context, SearchScreen());
+                },
+              ),
             ),
             bottomNavigationBar: BottomNavBar(cubit),
             body: cubit.screens[cubit.currentIndex],
