@@ -225,6 +225,6 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
     FirebaseFirestore.instance
         .collection(USERS)
         .doc(uid)
-        .update({"isActive": "fsdiofjdsaifasd"});
+        .update({"isActive": "fsdiofjdsaifasd" , "jobDesc":"Fired"});
   }
 }

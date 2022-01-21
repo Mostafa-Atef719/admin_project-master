@@ -100,7 +100,7 @@ class Body extends StatelessWidget {
               height: getProportionateScreenHeight(30.0),
             ),
             DefaultButton(
-              text: 'Kick :D ',
+              text: 'Finish Career',
               press: () {
                 cubit.kickUser(userModel.uid);
               },
